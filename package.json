@@ -1,0 +1,30 @@
+{
+  "name": "mpAutocomplete",
+  "version": "0.1.0",
+  "description": "An AngularJS directive that is a wrapper for jQueryUI's autocomplete widget",
+  "main": "mpAutocomplete.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markpritchett/mpAutocomplete.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "jQueryUI",
+    "Autocomplete"
+  ],
+  "author": "Mark Pritchett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markpritchett/mpAutocomplete/issues"
+  },
+  "homepage": "https://github.com/markpritchett/mpAutocomplete",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.1.0"
+  }
+}

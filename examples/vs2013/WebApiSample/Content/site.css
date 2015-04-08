@@ -1,0 +1,7 @@
+﻿.spacer {
+    margin-top: 10px;
+}
+
+.ui-autocomplete {
+    z-index: 2147483647;
+}

@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Autocomplete Examples</title>
+
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/themes/base/core.css" rel="stylesheet" />
+    <link href="Content/themes/base/theme.css" rel="stylesheet" />
+    <link href="Content/themes/base/autocomplete.css" rel="stylesheet" />
+    <link href="Content/themes/base/menu.css" rel="stylesheet" />
+    <link href="Content/site.css" rel="stylesheet" />
+
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/jquery-ui-1.11.3.js"></script>
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+
+    <script src="app/app.js"></script>
+    <script src="app/myController.js"></script>
+    <script src="app/userRepository.js"></script>
+    <script src="Scripts/mpAutocomplete.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="MyController as vm">
+
+        <h1>AngularJS jQueryUI Autocomplete Directive</h1>
+
+        <h2>Why not use an existing directive?</h2>
+
+        <p>I wanted a simple, declarative and expressive directive that:</p>
+
+        <ul>
+            <li>Doesn't need a method on view model to retrieve the suggestions, just specify a url</li>
+            <li>Works with simple arrays</li>
+            <li>Allows custom entries on simple arrays</li>
+            <li>Works with object arrays and allows the displayed suggestions to be configured using expressions</li>
+            <li>For object arrays, lets you store either the full object or a single property</li>
+            <li>Enables additional work to be carried out once a selection has been made</li>
+        </ul>
+
+        <h2>Examples</h2>
+
+        <button ng-hide="vm.showUsers" ng-click="vm.showUsers=true" title="See a list of sample users.  Useful when you want to know what you need to type in the examples below">Show Users</button>
+        <button ng-show="vm.showUsers" ng-click="vm.showUsers=false">Hide Users</button>
+
+        <div ng-show="vm.showUsers">
+            <div class="spacer"></div>
+            <pre>
+                {{ vm.users | json }}
+            </pre>
+            <hr />
+        </div>
+
+        <h3>Simple Array</h3>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-10">
+                    <pre>
+&lt;input type="text" class="form-control" mp-autocomplete url="api/users/firstName/autocomplete" ng-model="vm.selectedFirstName" /&gt;
+                    </pre>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Info</label>
+                <div class="col-sm-10">
+                    <div class="alert alert-info">
+                        Just have an array of strings? Just set the <strong>url</strong> and <strong>ng-model</strong> attributes.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">First Name Lookup</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" mp-autocomplete url="api/users/firstName/autocomplete" ng-model="vm.selectedFirstName" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Selected First Name</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        {{ vm.selectedFirstName || 'None' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h3>Simple Array (with override)</h3>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-10">
+                    <pre>
+&lt;input type="text" class="form-control" mp-autocomplete url="api/users/firstName/autocomplete" ng-model="vm.selectedFirstName2" allow-custom-entry="true"/&gt;
+                        </pre>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Info</label>
+                <div class="col-sm-10">
+                    <div class="alert alert-info">
+                        Want to allow users to set values not in the list of suggestions? Just set the <strong>allow-custom-entry</strong> attribute to true!
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">First Name Lookup</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" mp-autocomplete url="api/users/firstName/autocomplete" ng-model="vm.selectedFirstName2" allow-custom-entry="true" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Selected First Name</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        {{ vm.selectedFirstName2 || 'None' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h3>Object Array Example - select entire object</h3>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-10">
+                    <pre ng-non-bindable>
+&lt;input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" ng-model="vm.selectedUser"/&gt;
+                    </pre>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Info</label>
+                <div class="col-sm-10">
+                    <div class="alert alert-info">
+                        <p>
+                            OK. Enough with the simple strings, I have an array of objects. What do I do? Just stick an expression in the <strong>label</strong> attribute
+                            and get nicely formatted suggestions.
+                        </p>
+                        <p>
+                            PS, the entire user object is stored in the view model property.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">User Lookup</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" ng-model="vm.selectedUser" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Selected User</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        {{ vm.selectedUser | json }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h3>Object Array Example - select single property</h3>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-10">
+                    <pre ng-non-bindable>
+&lt;input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" value="lastName" ng-model="vm.selectedLastName" /&gt;
+                    </pre>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Info</label>
+                <div class="col-sm-10">
+                    <div class="alert alert-info">
+                        Don't want full object storing in your view model? Just add the <strong>value</strong> attribute and tell the directive which property you want.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Last Name Lookup</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" value="lastName" ng-model="vm.selectedLastName" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Selected Last Name</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        {{ vm.selectedLastName || 'None' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h3>Object Array Example - onSelect example</h3>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-10">
+                    <pre ng-non-bindable>
+&lt;input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" ng-model="vm.selectedUser2" on-select="vm.userSelected()"/&gt;
+                    </pre>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Info</label>
+                <div class="col-sm-10">
+                    <div class="alert alert-info">
+                        What if I need to do something after a selection has been made? Set the <strong>on-select</strong> attribute to a view model method and voila!
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">User Lookup</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" mp-autocomplete url="api/users/autocomplete" label="{{lastName}}, {{firstName}} ({{username}})" ng-model="vm.selectedUser2" on-select="vm.userSelected()" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Selected User</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        {{ vm.selectedUser2 | json }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
